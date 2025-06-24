@@ -68,15 +68,14 @@
     }
 
     .text {
-      font-size: 14px; /* 👈 nhỏ hơn */
+      font-size: 14px;
       color: #ffb6c1;
       text-shadow: 0 0 10px #ff69b4;
       will-change: transform, opacity;
-      animation: fall linear infinite, colorShift 8s ease-in-out infinite;
     }
 
     .heart {
-      font-size: 12px; /* 👈 nhỏ hơn */
+      font-size: 12px;
       color: pink;
       animation: fall linear infinite;
     }
@@ -92,7 +91,7 @@
     #intro {
       top: 38%;
       color: #ffc0cb;
-      font-size: 16px; /* 👈 nhỏ hơn */
+      font-size: 16px;
       text-shadow: 0 0 10px #ff69b4;
       margin-bottom: 8px;
     }
@@ -102,7 +101,7 @@
       background: #ff69b4;
       border: none;
       color: white;
-      font-size: 16px; /* 👈 nhỏ hơn */
+      font-size: 16px;
       padding: 8px 20px;
       border-radius: 30px;
       box-shadow: 0 0 10px #ff69b4;
@@ -126,7 +125,7 @@
 </head>
 <body>
 
-<div id="intro">Ấn vào nút này đi</div>
+<div id="intro">Ấn vào nút này đi nào💖</div>
 <button id="playButton">Bắt đầu</button>
 
 <!-- 🎵 Nhạc nền: chỉ phát sau khi ấn bắt đầu -->
@@ -175,10 +174,14 @@
       const z = Math.floor(Math.random() * 1000) - 600;
       el.style.left = `${Math.random() * 80}vw`;
       el.style.setProperty('--depth', `${z}px`);
-      el.style.animationDuration = `${6 + Math.random() * 6}s`;
-      el.style.animationDelay = `${Math.random() * 0}s`;
       el.innerText = msg;
+      el.style.opacity = '0';
       scene.appendChild(el);
+
+      setTimeout(() => {
+        el.style.animation = `fall ${6 + Math.random() * 6}s linear ${Math.random() * 2}s infinite, colorShift 8s ease-in-out infinite`;
+        el.style.opacity = '1';
+      }, 50);
     });
   }
 
