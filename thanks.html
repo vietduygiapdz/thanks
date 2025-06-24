@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thanks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    #scene-container {
+      width: 100vw;
+      height: 100vh;
+      perspective: 1500px;
+      overflow: hidden;
+    }
+
+    #scene {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: rotateX(0deg) rotateY(0deg) scale(1);
+      transition: transform 0.1s linear;
+      position: relative;
+    }
+
+    .falling {
+      position: absolute;
+      top: -10vh;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) translateZ(var(--depth)); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(120vh) translateZ(var(--depth)); opacity: 0; }
+    }
+
+    @keyframes colorShift {
+      0%   { color: #ffb6c1; }
+      14%  { color: #c9f9ff; }
+      28%  { color: #f8f8ff; }
+      42%  { color: #b2fefa; }
+      57%  { color: #ffdee9; }
+      71%  { color: #c9f9ff; }
+      85%  { color: #f8f8ff; }
+      100% { color: #ffb6c1; }
+    }
+
+    .text {
+      font-size: 18px;
+      color: #ffb6c1;
+      text-shadow: 0 0 10px #ff69b4;
+      will-change: transform, opacity;
+      animation: fall linear infinite, colorShift 8s ease-in-out infinite;
+    }
+
+    .heart {
+      font-size: 16px;
+      color: pink;
+      animation: fall linear infinite;
+    }
+
+    #intro, #playButton {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    #intro {
+      top: 38%;
+      color: #ffc0cb;
+      font-size: 20px;
+      text-shadow: 0 0 10px #ff69b4;
+      margin-bottom: 8px;
+    }
+
+    #playButton {
+      top: calc(38% + 40px);
+      background: #ff69b4;
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 10px 24px;
+      border-radius: 30px;
+      box-shadow: 0 0 10px #ff69b4;
+      cursor: pointer;
+    }
+
+    #bgm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="intro">Ấn vào nút này đi nào💖</div>
+<button id="playButton">Bắt đầu</button>
+
+<!-- 🎵 Nhạc nền: chỉ phát sau khi ấn bắt đầu -->
+<!-- 🔁 Thay đường dẫn dưới đây bằng link mp3 bạn upload lên GitHub -->
+<audio id="bgm" loop>
+  <source src="your-music-file.mp3" type="audio/mpeg">
+  Trình duyệt của bạn không hỗ trợ phát nhạc.
+</audio>
+
+<div id="scene-container">
+  <div id="scene"></div>
+</div>
+
+<script>
+  const messages = [
+    "Bình tĩnh, tự tin, chiến thắng nhé",
+    "Chúc toàn bộ thành viên A10K58 hạnh phúc, thành công",
+    "Cảm ơn vì 3 năm thanh xuân tươi đẹp",
+    "Cảm ơn vì đã là một phần trong kí ức của nhau",
+    "Mong rằng chúng ta sẽ còn gặp lại",
+    "Chúc tất cả chúng ta đỗ NV1!",
+    "Chúc mọi người may mắn!",
+    "Cố lên A10K58 ơi, chúng ta sắp đi hết hành trình này rồi!",
+    "Cảm ơn vì những ngày tháng mình có nhau",
+    "Lớp mình có thể không hoàn hảo, nhưng luôn là nơi tuyệt vời nhất để trở về, để cười, để nhớ và để thương!",
+    "Mong rằng chúng ta sẽ còn gặp lại",
+    "Chúc tất cả chúng ta đỗ NV1"
+  ];
+
+  const hearts = ["💗", "💓", "💖", "💞", "💝", "❤️", "💕"];
+  const scene = document.getElementById('scene');
+
+  for (let i = 0; i < 150; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.top = `${Math.random() * 100}vh`;
+    star.style.left = `${Math.random() * 100}vw`;
+    star.style.animationDuration = `${2 + Math.random() * 3}s`;
+    document.body.appendChild(star);
+  }
+
+  function showTexts() {
+    messages.forEach(msg => {
+      const el = document.createElement('div');
+      el.className = 'falling text';
+      const z = Math.floor(Math.random() * 1000) - 600;
+      el.style.left = `${Math.random() * 80}vw`;
+      el.style.setProperty('--depth', `${z}px`);
+      el.style.animationDuration = `${6 + Math.random() * 6}s`;
+      el.style.animationDelay = `${Math.random() * 2}s`;
+      el.innerText = msg;
+      scene.appendChild(el);
+    });
+  }
+
+  function showHearts() {
+    for (let i = 0; i < 50; i++) {
+      const el = document.createElement('div');
+      el.className = 'falling heart';
+      const z = Math.floor(Math.random() * 1000) - 600;
+      el.style.left = `${Math.random() * 100}vw`;
+      el.style.setProperty('--depth', `${z}px`);
+      el.style.animationDuration = `${5 + Math.random() * 5}s`;
+      el.style.animationDelay = `${Math.random()}s`;
+      el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      scene.appendChild(el);
+    }
+  }
+
+  let rotateX = 0;
+  let rotateY = 0;
+  let scale = 1;
+  let startX, startY;
+
+  function onStart(e) {
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+    document.addEventListener(e.type === 'touchstart' ? 'touchmove' : 'mousemove', onMove);
+    document.addEventListener(e.type === 'touchstart' ? 'touchend' : 'mouseup', onEnd);
+  }
+
+  function onMove(e) {
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    const dx = x - startX;
+    const dy = y - startY;
+    rotateY += dx * 0.2;
+    rotateX -= dy * 0.2;
+    scene.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+    startX = x;
+    startY = y;
+  }
+
+  function onEnd() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onEnd);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onEnd);
+  }
+
+  // Zoom bằng cuộn chuột
+  document.addEventListener("wheel", function(e) {
+    e.preventDefault();
+    scale += e.deltaY * -0.001;
+    scale = Math.min(Math.max(0.5, scale), 2); // giới hạn zoom
+    scene.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+  }, { passive: false });
+
+  scene.addEventListener('mousedown', onStart);
+  scene.addEventListener('touchstart', onStart);
+
+  document.getElementById("playButton").addEventListener("click", () => {
+    document.getElementById("intro").remove();
+    document.getElementById("playButton").remove();
+    document.getElementById("bgm").play(); // phát nhạc sau khi ấn bắt đầu
+    showTexts();
+    showHearts();
+  });
+</script>
+
+</body>
+</html>
