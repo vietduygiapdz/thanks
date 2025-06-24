@@ -39,7 +39,7 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transform: rotateX(0deg) rotateY(0deg) scale(1);
+      transform: rotateX(0deg) rotateY(0deg) scale(0.8); /* 👈 nhìn xa hơn */
       transition: transform 0.1s linear;
       position: relative;
     }
@@ -68,7 +68,7 @@
     }
 
     .text {
-      font-size: 18px;
+      font-size: 14px; /* 👈 nhỏ hơn */
       color: #ffb6c1;
       text-shadow: 0 0 10px #ff69b4;
       will-change: transform, opacity;
@@ -76,7 +76,7 @@
     }
 
     .heart {
-      font-size: 16px;
+      font-size: 12px; /* 👈 nhỏ hơn */
       color: pink;
       animation: fall linear infinite;
     }
@@ -92,7 +92,7 @@
     #intro {
       top: 38%;
       color: #ffc0cb;
-      font-size: 20px;
+      font-size: 16px; /* 👈 nhỏ hơn */
       text-shadow: 0 0 10px #ff69b4;
       margin-bottom: 8px;
     }
@@ -102,8 +102,8 @@
       background: #ff69b4;
       border: none;
       color: white;
-      font-size: 18px;
-      padding: 10px 24px;
+      font-size: 16px; /* 👈 nhỏ hơn */
+      padding: 8px 20px;
       border-radius: 30px;
       box-shadow: 0 0 10px #ff69b4;
       cursor: pointer;
@@ -111,6 +111,16 @@
 
     #bgm {
       display: none;
+    }
+
+    @media (max-width: 600px) {
+      .text { font-size: 12px; }
+      .heart { font-size: 10px; }
+      #intro { font-size: 14px; }
+      #playButton {
+        font-size: 14px;
+        padding: 6px 16px;
+      }
     }
   </style>
 </head>
@@ -120,7 +130,7 @@
 <button id="playButton">Bắt đầu</button>
 
 <!-- 🎵 Nhạc nền: chỉ phát sau khi ấn bắt đầu -->
-<!-- 🔁 Thay đường dẫn dưới đây bằng link mp3 bạn upload lên GitHub -->
+<!-- 🔁 Thay đường dẫn dưới đây bằng file mp3 RAW từ GitHub -->
 <audio id="bgm" loop>
   <source src="https://raw.githubusercontent.com/vietduygiapdz/thanks/18086585af079790d9df889bbdf9f1df544257a4/utomp3.com%20-%20Ph%C3%A9p%20M%C3%A0u%20%C4%90%C3%A0n%20C%C3%A1%20G%E1%BB%97%20OST%20%20Mounter%20x%20MAYDAYs%20Minh%20T%E1%BB%91c%20%20Official%20MV.mp3" type="audio/mpeg">
   Trình duyệt của bạn không hỗ trợ phát nhạc.
@@ -188,7 +198,7 @@
 
   let rotateX = 0;
   let rotateY = 0;
-  let scale = 1;
+  let scale = 0.8;
   let startX, startY;
 
   function onStart(e) {
@@ -217,11 +227,10 @@
     document.removeEventListener('touchend', onEnd);
   }
 
-  // Zoom bằng cuộn chuột
   document.addEventListener("wheel", function(e) {
     e.preventDefault();
     scale += e.deltaY * -0.001;
-    scale = Math.min(Math.max(0.5, scale), 2); // giới hạn zoom
+    scale = Math.min(Math.max(0.5, scale), 2);
     scene.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
   }, { passive: false });
 
@@ -231,7 +240,7 @@
   document.getElementById("playButton").addEventListener("click", () => {
     document.getElementById("intro").remove();
     document.getElementById("playButton").remove();
-    document.getElementById("bgm").play(); // phát nhạc sau khi ấn bắt đầu
+    document.getElementById("bgm").play();
     showTexts();
     showHearts();
   });
