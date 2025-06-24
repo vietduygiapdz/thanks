@@ -193,16 +193,20 @@
     el.style.left = `${Math.random() * 100}vw`;
     el.style.setProperty('--depth', `${z}px`);
     el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-    el.style.opacity = '0';
+    el.style.opacity = '0'; // Ẩn trước
+
+    // Gán trước mà không set animation
     scene.appendChild(el);
 
-    setTimeout(() => {
-      el.style.animation = `fall ${5 + Math.random() * 5}s linear ${Math.random()}s infinite`;
-      el.style.opacity = '1';
-    }, 50);
+    // Khởi động animation bằng frame tiếp theo
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.animation = `fall ${5 + Math.random() * 5}s linear ${Math.random()}s infinite`;
+        el.style.opacity = '1';
+      });
+    });
   }
 }
-
   let rotateX = 0;
   let rotateY = 0;
   let scale = 0.8;
