@@ -39,7 +39,7 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transform: rotateX(0deg) rotateY(0deg) scale(0.8); /* 👈 nhìn xa hơn */
+      transform: rotateX(0deg) rotateY(0deg) scale(0.8);
       transition: transform 0.1s linear;
       position: relative;
     }
@@ -175,38 +175,32 @@
       el.style.left = `${Math.random() * 80}vw`;
       el.style.setProperty('--depth', `${z}px`);
       el.innerText = msg;
-      el.style.opacity = '0';
       scene.appendChild(el);
 
-      setTimeout(() => {
-        el.style.animation = `fall ${6 + Math.random() * 6}s linear ${Math.random() * 2}s infinite, colorShift 8s ease-in-out infinite`;
-        el.style.opacity = '1';
-      }, 50);
-    });
-  }
-
-  function showHearts() {
-  for (let i = 0; i < 50; i++) {
-    const el = document.createElement('div');
-    el.className = 'falling heart';
-    const z = Math.floor(Math.random() * 1000) - 600;
-    el.style.left = `${Math.random() * 100}vw`;
-    el.style.setProperty('--depth', `${z}px`);
-    el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-    el.style.opacity = '0'; // Ẩn trước
-
-    // Gán trước mà không set animation
-    scene.appendChild(el);
-
-    // Khởi động animation bằng frame tiếp theo
-    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        el.style.animation = `fall ${5 + Math.random() * 5}s linear ${Math.random()}s infinite`;
+        el.style.animation = `fall ${6 + Math.random() * 6}s linear 0s infinite, colorShift 8s ease-in-out infinite`;
         el.style.opacity = '1';
       });
     });
   }
-}
+
+  function showHearts() {
+    for (let i = 0; i < 50; i++) {
+      const el = document.createElement('div');
+      el.className = 'falling heart';
+      const z = Math.floor(Math.random() * 1000) - 600;
+      el.style.left = `${Math.random() * 100}vw`;
+      el.style.setProperty('--depth', `${z}px`);
+      el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      scene.appendChild(el);
+
+      requestAnimationFrame(() => {
+        el.style.animation = `fall ${5 + Math.random() * 5}s linear 0s infinite`;
+        el.style.opacity = '1';
+      });
+    }
+  }
+
   let rotateX = 0;
   let rotateY = 0;
   let scale = 0.8;
@@ -252,8 +246,10 @@
     document.getElementById("intro").remove();
     document.getElementById("playButton").remove();
     document.getElementById("bgm").play();
-    showTexts();
-    showHearts();
+    setTimeout(() => {
+      showTexts();
+      showHearts();
+    }, 0);
   });
 </script>
 
